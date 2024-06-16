@@ -2,6 +2,7 @@ const express = require("express");
 const blogController = require("../controllers/blogController.js");
 const authenticate = require("../middlewares/authentication.js");
 const logger = require("../utils/logger.js");
+const redisClient = require("../middlewares/redis.js");
 
 const blogRoute = express.Router();
 

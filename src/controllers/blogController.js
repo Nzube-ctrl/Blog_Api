@@ -1,6 +1,5 @@
 const blogService = require("../services/blogService");
 
-
 const getAllBlogs = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;

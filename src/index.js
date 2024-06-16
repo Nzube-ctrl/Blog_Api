@@ -8,6 +8,7 @@ const logger = require("./utils/logger.js");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
+const redisClient = require("./middlewares/redis.js");
 
 //Middlewares
 app.use(express.json());
@@ -16,12 +17,14 @@ app.use("/api/user", authRoute);
 app.use("/api", blogRoute);
 
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the Blog Api" });
+  res.status(404).json({ message: "Welcome to the Blog Api" });
 });
 
 app.all("*", (req, res) => {
   res.json({ message: "Page Not Found" });
 });
+
+redisClient.connect();
 
 mongoose
   .connect(MONGO_URI)
