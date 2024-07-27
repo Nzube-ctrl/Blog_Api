@@ -3,6 +3,7 @@ const blogController = require("../controllers/blogController.js");
 const authenticate = require("../middlewares/authentication.js");
 const logger = require("../utils/logger.js");
 const redisClient = require("../middlewares/redis.js");
+const blogValidatorMiddleWare = require("../validators/blogValidator.js");
 
 const blogRoute = express.Router();
 
@@ -16,12 +17,12 @@ blogRoute.get("/:id", (req, res) => {
   blogController.getBlog(req, res);
 });
 
-blogRoute.post("/", authenticate, (req, res) => {
+blogRoute.post("/", authenticate, blogValidatorMiddleWare, (req, res) => {
   logger.info("POST /blogs requested.");
   blogController.createBlog(req, res);
 });
 
-blogRoute.put("/:id", authenticate, (req, res) => {
+blogRoute.put("/:id", authenticate, blogValidatorMiddleWare, (req, res) => {
   logger.info(`PUT /blogs/${req.params.id} requested.`);
   blogController.editBlog(req, res);
 });

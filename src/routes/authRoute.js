@@ -3,9 +3,9 @@ const authController = require("../controllers/authController.js");
 const authenticate = require("../middlewares/authentication.js");
 const logger = require("../utils/logger.js");
 const {
-  loginValidatorMiddleware,
   userValidatorMiddleware,
-} = require("../middlewares/userValidator.js");
+  loginValidatorMiddleware,
+} = require("../validators/userValidator.js");
 const authRoute = express.Router();
 
 authRoute.post("/signup", userValidatorMiddleware, (req, res) => {
