@@ -14,14 +14,14 @@ const redisClient = require("./middlewares/redis.js");
 app.use(express.json());
 app.use(bodyParser.json());
 app.use("/api/user", authRoute);
-app.use("/api", blogRoute);
+app.use("/api/blog", blogRoute);
 
 app.get("/", (req, res) => {
-  res.status(404).json({ message: "Welcome to the Blog Api" });
+  res.json({ message: "Welcome to the Blog Api" });
 });
 
 app.all("*", (req, res) => {
-  res.json({ message: "Page Not Found" });
+  res.status.json({ message: "Page Not Found" });
 });
 
 redisClient.connect();
