@@ -2,27 +2,13 @@ const express = require("express");
 const blogController = require("../controllers/blogController.js");
 const authenticate = require("../middlewares/authentication.js");
 const logger = require("../utils/logger.js");
-const cacheMiddleware = require("../middlewares/cacheMiddleWare.js");
-const redisClient = require("../middlewares/redis.js");
 const blogValidatorMiddleWare = require("../validators/blogValidator.js");
 
 const blogRoute = express.Router();
 
-blogRoute.get("/", cacheMiddleware, async (req, res) => {
+blogRoute.get("/", async (req, res) => {
   logger.info("GET /blogs requested.");
-  try {
-    const blogs = await blogController.getAllBlogs(
-      req.query.page,
-      req.query.pageSize
-    );
-    // Cache the response data if the cacheKey is set
-    if (res.locals.cacheKey) {
-      redisClient.setEx(res.locals.cacheKey, 3600, JSON.stringify(blogs)); // Cache expires in 1 hour
-    }
-    res.json(blogs);
-  } catch (err) {
-    res.status(500).json({ error: "An error occurred" });
-  }
+  blogController.getAllBlogs(req, res);
 });
 
 blogRoute.get("/:id", (req, res) => {

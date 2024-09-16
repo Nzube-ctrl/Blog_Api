@@ -2,13 +2,10 @@ const blogService = require("../services/blogService");
 
 const getAllBlogs = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.pageSize) || 20;
-
-    const blogs = await blogService.getAllBlogs(page, pageSize);
+    const blogs = await blogService.getAllBlogs();
     res.json(blogs);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.json({ message: error.message });
   }
 };
 

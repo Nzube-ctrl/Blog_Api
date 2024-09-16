@@ -33,11 +33,13 @@ const editBlog = async (blogId, userId, updatedFields) => {
   }
 };
 
-const getAllBlogs = async (page, pageSize) => {
-  const skip = (page - 1) * pageSize;
-  const blogs = await Blog.find().skip(skip).limit(pageSize);
-
-  return blogs;
+const getAllBlogs = async () => {
+  try {
+    const blogs = await Blog.find({});
+    res.json(blogs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 const getBlogById = async (id) => {
