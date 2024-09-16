@@ -14,7 +14,7 @@ app.use("/api/user", authRoute);
 app.use("/api/blog", blogRoute);
 
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the Blog Api" });
+  res.json({ message: "Blog Api" });
 });
 
 app.all("*", (req, res) => {
