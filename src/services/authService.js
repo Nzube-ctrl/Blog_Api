@@ -41,7 +41,9 @@ const signIn = async (email, password) => {
     throw new Error("Invalid Password");
   }
   const token = generateToken(user);
-  return { user, token };
+  const userWithoutPassword = user.toObject();
+  delete userWithoutPassword.password;
+  return { user: userWithoutPassword, token };
 };
 
 module.exports = {
