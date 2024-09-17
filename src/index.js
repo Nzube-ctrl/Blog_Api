@@ -1,5 +1,5 @@
-const express = require("express");
 require("dotenv").config();
+const express = require("express");
 const blogRoute = require("./routes/blogRoute.js");
 const authRoute = require("./routes/authRoute.js");
 const logger = require("./utils/logger.js");
@@ -7,9 +7,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const redisClient = require("./config/redis.js");
 const connectToDb = require("./config/db.js");
+const helmet = require("helmet");
+const limiter = require("./middlewares/rate.limiter.js");
 
 //Middlewares
 app.use(express.json());
+app.use(helmet());
+app.use(limiter);
 app.use("/api/user", authRoute);
 app.use("/api/blog", blogRoute);
 
