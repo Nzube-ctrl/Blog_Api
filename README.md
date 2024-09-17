@@ -26,3 +26,7 @@ Before you begin, ensure you have the following installed :
 ## Installation
 ```bash
 git clone https://github.com/Nzube-ctrl/Blog_Api
+cd Blog_Api
+npm install
+
+
