@@ -1,8 +1,8 @@
 const joi = require("joi");
 
 const userValidator = joi.object({
-  first_name: joi.string().min(5).max(30),
-  last_name: joi.string().min(5).max(30),
+  first_name: joi.string().min(5).max(30).required(),
+  last_name: joi.string().min(5).max(30).required(),
   email: joi
     .string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
