@@ -36,7 +36,7 @@ const editBlog = async (blogId, userId, updatedFields) => {
 const getAllBlogs = async () => {
   try {
     const blogs = await Blog.find({});
-    res.json(blogs);
+    return blogs;
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

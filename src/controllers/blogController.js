@@ -2,10 +2,10 @@ const blogService = require("../services/blogService");
 
 const getAllBlogs = async (req, res) => {
   try {
-    const blogs = await blogService.getAllBlogs();
+    const blogs = await blogService.getAllBlogs({});
     res.json(blogs);
   } catch (error) {
-    res.json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
