@@ -1,8 +1,8 @@
 const express = require("express");
-const blogController = require("../controllers/blogController.js");
+const blogController = require("../controllers/blog.controller.js");
 const authenticate = require("../middlewares/authentication.js");
 const logger = require("../utils/logger.js");
-const blogValidatorMiddleWare = require("../validators/blogValidator.js");
+const blogValidatorMiddleWare = require("../validators/blog.validator.js");
 
 const blogRoute = express.Router();
 

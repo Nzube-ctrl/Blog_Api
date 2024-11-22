@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
-const blogRoute = require("./routes/blogRoute.js");
-const authRoute = require("./routes/authRoute.js");
+const blogRoute = require("./routes/blog.route.js");
+const authRoute = require("./routes/auth.route.js");
 const logger = require("./utils/logger.js");
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +14,7 @@ const limiter = require("./middlewares/rate.limiter.js");
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
-app.use("/api/user", authRoute);
+app.use("/api/auth", authRoute);
 app.use("/api/blog", blogRoute);
 
 app.get("/", (req, res) => {
@@ -30,4 +30,4 @@ app.listen(PORT, () => {
 });
 
 connectToDb();
-redisClient.connect();
+// redisClient.connect();

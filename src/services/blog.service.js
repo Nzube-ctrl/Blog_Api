@@ -1,4 +1,4 @@
-const Blog = require("../models/blogModel.js");
+const Blog = require("../models/blog.model.js");
 
 const createBlog = async (blogData, userId) => {
   const { title, description, body, tags } = blogData;
@@ -45,35 +45,46 @@ const getAllBlogs = async () => {
 const getBlogById = async (id) => {
   try {
     const blog = await Blog.findById(id);
-
     if (!blog) {
       throw new Error("Blog not found");
     }
-
     blog.read_count++;
     await blog.save();
-
     return blog;
   } catch (error) {
-    throw error;
+    return {
+      success: false,
+      message: `An error occurred`,
+      error: error.message,
+    };
   }
 };
 const deleteBlog = async (id, userId) => {
   try {
+    if (!id || !userId) {
+      throw new Error("Invalid input: Blog ID and User ID are required");
+    }
     const deletedBlog = await Blog.findOneAndDelete({
       _id: id,
       author: userId,
     });
-
     if (!deletedBlog) {
-      throw new Error(
-        "Blog not found or you are not authorized to delete this blog"
-      );
+      return {
+        success: false,
+        message: "Blog not found or you are not authorized to delete this blog",
+      };
     }
-
-    return deletedBlog;
+    return {
+      success: true,
+      message: "Blog deleted successfully",
+      data: deletedBlog,
+    };
   } catch (error) {
-    throw error;
+    return {
+      success: false,
+      message: "An error occurred while deleting the blog",
+      error: error.message,
+    };
   }
 };
 
@@ -82,7 +93,11 @@ const getUserBlogs = async (userId) => {
     const userBlogs = await Blog.find({ author: userId });
     return userBlogs;
   } catch (error) {
-    throw new Error(error.message);
+    return {
+      success: false,
+      message: `An error occurred`,
+      error: error.message,
+    };
   }
 };
 

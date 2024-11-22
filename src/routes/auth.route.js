@@ -1,11 +1,11 @@
 const express = require("express");
-const authController = require("../controllers/authController.js");
+const authController = require("../controllers/auth.controller.js");
 const authenticate = require("../middlewares/authentication.js");
 const logger = require("../utils/logger.js");
 const {
   userValidatorMiddleware,
   loginValidatorMiddleware,
-} = require("../validators/userValidator.js");
+} = require("../validators/user.validator.js");
 const authRoute = express.Router();
 
 authRoute.post("/signup", userValidatorMiddleware, (req, res) => {
