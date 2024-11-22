@@ -1,10 +1,18 @@
 const Blog = require("../models/blog.model.js");
 
 const createBlog = async (blogData, userId) => {
-  const { title, description, body, tags } = blogData;
-  const blog = new Blog({ title, description, body, tags, author: userId });
-  await blog.save();
-  return blog;
+  try {
+    const { title, description, body, tags } = blogData;
+    const blog = new Blog({ title, description, body, tags, author: userId });
+    await blog.save();
+    return blog;
+  } catch (error) {
+    return {
+      success: false,
+      message: `An error occurred`,
+      error: error.message,
+    };
+  }
 };
 
 const editBlog = async (blogId, userId, updatedFields) => {
@@ -14,31 +22,46 @@ const editBlog = async (blogId, userId, updatedFields) => {
     if (!blog) {
       throw new Error("Blog not found");
     }
-
     if (blog.author.toString() !== userId) {
       throw new Error("You are not authorized to edit this blog");
     }
-
     if (updatedFields.body) {
       blog.read_count++; // Increment read_count if body is updated
     }
-
     const updatedBlog = await Blog.findByIdAndUpdate(blogId, updatedFields, {
       new: true,
     });
-
     return updatedBlog;
   } catch (error) {
-    throw error;
+    return {
+      success: false,
+      message: `An error occurred`,
+      error: error.message,
+    };
   }
 };
 
-const getAllBlogs = async () => {
+const getAllBlogs = async (Page = 1, limit = 10) => {
   try {
-    const blogs = await Blog.find({});
-    return blogs;
+    const skip = (Page - 1) * limit;
+    const blogs = await Blog.find({}).skip(skip).limit(limit).exec();
+    const totalBlogs = await Blog.countDocuments({});
+    return {
+      success: true,
+      data: blogs,
+      pagination: {
+        currentPage: Page,
+        totalPages: Math.ceil(totalBlogs / limit),
+        totalItems: totalBlogs,
+        pageSize: limit,
+      },
+    };
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return {
+      success: false,
+      message: `An error occurred`,
+      error: error.message,
+    };
   }
 };
 
