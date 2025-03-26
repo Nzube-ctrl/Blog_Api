@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(limiter);
 app.use("/api/auth", authRoute);
-app.use("/api/blog", blogRoute);
+app.use("/api/blogs", blogRoute);
 
 app.get("/", (req, res) => {
   res.json({ message: "Blog Api" });
